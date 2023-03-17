@@ -29,3 +29,19 @@ module.exports.getTodos = (req, res) => {
     res.status(500).json(error);
   });
 }
+
+module.exports.deleteTodo = (req, res) => {
+  Todo.findOne({
+    where: {
+      id: req.params.id,
+    },
+  }).then((todo) => {
+    if (!todo) {
+      return res.status(404).json({ message: "Couldn't find todo!" });
+    }
+    todo.destroy();
+    res.json({message: "Deleted Successfully!"})
+  }).catch((error) => {
+    res.status(500).json(error);
+  })
+}
