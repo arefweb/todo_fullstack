@@ -3,7 +3,6 @@ const Todo = seqModel.todo;
 
 module.exports.createTodo = (req, res) => {
   const { todoName, done} = req.body;
-  console.log(req.body.done);
   if (!todoName) {
     return res.status(400).json({ message: "send required fields"});
   }
@@ -41,6 +40,26 @@ module.exports.deleteTodo = (req, res) => {
     }
     todo.destroy();
     res.json({message: "Deleted Successfully!"})
+  }).catch((error) => {
+    res.status(500).json(error);
+  })
+}
+
+module.exports.updateTodo = (req, res) => {
+  const { todoName, done} = req.body;
+  Todo.findOne({
+    where: {
+      id: req.params.id,
+    },
+  }).then((todo) => {
+    if (!todo) {
+      return res.status(404).json({ message: "Couldn't find todo!" });
+    }
+    todo.update({
+      todoName: todoName,
+      done: done
+    })
+    res.json({message: "Updated Successfully!"})
   }).catch((error) => {
     res.status(500).json(error);
   })
