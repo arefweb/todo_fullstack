@@ -17,3 +17,15 @@ module.exports.createTodo = (req, res) => {
     return res.status(500).send(error);
   }
 }
+
+module.exports.getTodos = (req, res) => {
+  Todo.findAll().then((todos) => {
+    if(todos.length) {
+      res.json(todos);
+    } else {
+      res.status(204).send({message: "no content"});
+    }
+  }).catch((error) => {
+    res.status(500).json(error);
+  });
+}
