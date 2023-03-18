@@ -2,12 +2,13 @@ const seqModel = require('../model');
 const Todo = seqModel.todo;
 
 module.exports.createTodo = (req, res) => {
-  const { todoName, done} = req.body;
+  const { todoName, done, id} = req.body;
   if (!todoName) {
     return res.status(400).json({ message: "send required fields"});
   }
   try {
     Todo.create({
+      ...(id && {id: id}),
       todoName: todoName,
       done: done
     });
