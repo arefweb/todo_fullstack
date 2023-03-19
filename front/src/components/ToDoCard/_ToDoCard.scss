@@ -1,0 +1,55 @@
+.ToDoCard{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  margin: 0 10px 16px 10px;
+  border-radius: 7px;
+  height: 90px;
+  box-shadow: 1px 1px 3px 0 gray;
+  &_left{
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &-title{
+      margin: 0;
+      cursor: pointer;
+      color: #30629A;
+    }
+    &-title.isDone{
+      text-decoration: line-through;
+      color: #9b9b9b;
+    }
+    &-time{
+      color: gray;
+      margin-top: 5px;
+      display: block;
+      font-size: 12px;
+    }
+
+  }
+  &_right{
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &-edit{
+      &:hover{
+        cursor: pointer;
+        & *{
+          stroke: #13ce13;
+        }
+      }
+    }
+    &-delete{
+      &:hover{
+        cursor: pointer;
+        & *{
+          stroke: red;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+.ToDoList {
+  margin: 20px auto;
+  display: block;
+  max-width: 900px;
+  box-sizing: border-box;
+  &_noContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2d90be;
+  }
+  &_sortBox{
+    margin: 16px 10px;
+    &-btn{
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
+}

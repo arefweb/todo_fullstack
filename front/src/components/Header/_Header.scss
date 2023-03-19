@@ -1,0 +1,46 @@
+.AppHeader{
+  background-image: linear-gradient(to right, #89CFF0, #30629A);
+  height: 100px;
+  border-bottom-left-radius: 70px;
+  border-bottom-right-radius: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &_wrapper{
+    max-width: 320px;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &_input{
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      width: 100%;
+      margin-right: 10px;
+    }
+    &_btn{
+      height: 36px;
+      width: 40px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background-color: #30629A;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      &::before{
+        content: "+";
+        font-size: 18px;
+      }
+      &:hover{
+        background-color: #467dbd;
+        border: 1px solid #30629A;
+        &::before{
+          content: "Add";
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
