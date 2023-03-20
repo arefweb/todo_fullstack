@@ -9,8 +9,8 @@ interface IToDoList {
   todos: Todo[];
   deleteTodo: (todo: number) => void;
   updateTodo: (todo: Todo) => void;
-  sort: 'up' | 'down';
-  setSort: Dispatch<SetStateAction<"up" | "down">>;
+  sort: 'asc' | 'desc';
+  setSort: Dispatch<SetStateAction<"asc" | "desc">>;
 }
 
 const ToDoList = ({todos, deleteTodo, updateTodo, sort, setSort}: IToDoList) => {
@@ -18,10 +18,10 @@ const ToDoList = ({todos, deleteTodo, updateTodo, sort, setSort}: IToDoList) => 
     <div className="ToDoList">
       <div className="ToDoList_sortBox">
         <button className="ToDoList_sortBox-btn"
-           onClick={() => setSort((prev) => prev === "up" ? "down" : "up" )}
+           onClick={() => setSort((prev) => prev === "asc" ? "desc" : "asc" )}
         >
-          {sort === 'up' && <SortUp />}
-          {sort === 'down' && <SortDown />}
+          {sort === 'asc' && <SortUp />}
+          {sort === 'desc' && <SortDown />}
         </button>
       </div>
       {!todos.length && (

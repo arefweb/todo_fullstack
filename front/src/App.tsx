@@ -3,73 +3,69 @@ import './assets/style/app.styles.scss';
 import Header from "src/components/Header/Header";
 import ToDoList from "src/components/ToDoList/ToDoList";
 import {Todo} from "src/App.types";
+import {TodoService} from "./services";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [sortedTodos, setSortedTodos] = useState<Todo[]>([]);
-  const [sort, setSort] = useState<'up' | 'down'>('up');
+  const [sort, setSort] = useState<'asc' | 'desc'>('asc');
 
   function addTodo(todo: string){
     const newTodo = {
       id: todos.length ? todos[todos.length - 1].id + 1 : 1,
       todoName: todo,
       done: false,
-      createdAt: new Date().toISOString()
+      // createdAt: new Date().toISOString()
     }
-    setTodos((prev) => [...prev, newTodo]);
+    TodoService.createTodo(newTodo).then((resp) => {
+      if(resp.status === 201) {
+        setTodos((prev) => [...prev, resp.data.payload]);
+      }
+    })
   }
 
   function deleteTodo(todoId: number){
-    const newTodo = todos.filter((todo) => {
-      return todo.id !== todoId;
-    });
-    setTodos(newTodo);
+    TodoService.deleteTodo(todoId).then((resp) => {
+      if(resp.status === 200){
+        const newTodo = todos.filter((todo) => {
+          return todo.id !== resp.data.payload.id;
+        });
+        setTodos(newTodo);
+      }
+    })
   }
 
   function updateTodo(todo: Todo){
     const updateIndex = todos.findIndex((item) => {
       return item.id === todo.id;
     })
-    const newTodo = [...todos];
-    newTodo[updateIndex].todoName = todo.todoName;
-    newTodo[updateIndex].done = todo.done;
-    setTodos(newTodo);
+    const toUpdate = {
+      todoName: todo.todoName,
+      done: todo.done
+    }
+    TodoService.updateTodo(todo.id, toUpdate).then((resp) => {
+      const newTodo = [...todos];
+      newTodo[updateIndex].todoName = resp.data.payload.todoName;
+      newTodo[updateIndex].done = resp.data.payload.done;
+      setTodos(newTodo);
+    });
   }
 
   const handleSort = () => {
-    if(sort === 'down') {
-      const cloneTodo = [...todos];
-      const newTodo = cloneTodo.sort((a, b) => {
-        if(a.createdAt < b.createdAt) {
-          return 1;
-        }
-        if(a.createdAt > b.createdAt){
-          return -1;
-        }
-        return 0;
-      });
-      setSortedTodos(newTodo);
-    }
-    if(sort === 'up') {
-      const cloneTodo = [...todos];
-      const newTodo = cloneTodo.sort((a, b) => {
-        if(a.createdAt < b.createdAt) {
-          return -1;
-        }
-        if(a.createdAt > b.createdAt){
-          return 1;
-        }
-        return 0;
-      });
-      setSortedTodos(newTodo);
-    }
+    TodoService.getTodos(sort).then((resp) => {
+      setSortedTodos(resp.data);
+    });
   }
-
 
   useEffect(() => {
     handleSort();
   }, [sort, todos]);
 
+  useEffect(() => {
+    TodoService.getTodos(sort).then((resp) => {
+      setTodos(resp.data);
+    })
+  }, []);
 
   return (
     <div>

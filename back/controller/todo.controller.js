@@ -6,20 +6,26 @@ module.exports.createTodo = (req, res) => {
   if (!todoName) {
     return res.status(400).json({ message: "send required fields"});
   }
-  try {
-    Todo.create({
-      ...(id && {id: id}),
-      todoName: todoName,
-      done: done
-    });
-    res.status(201).send("Todo added successfully");
-  } catch (error) {
+  Todo.create({
+    ...(id && {id: id}),
+    todoName: todoName,
+    done: done
+  }).then((newTodo) => {
+    if(newTodo) {
+      res.status(201).json({message: "Todo added successfully", payload: newTodo});
+    }
+  }).catch(error => {
     return res.status(500).send(error);
-  }
+  })
 }
 
 module.exports.getTodos = (req, res) => {
-  Todo.findAll().then((todos) => {
+  const sort = req.query.sort;
+  Todo.findAll({
+    order: [
+      ['createdAt', `${sort ? sort.toUpperCase() : "ASC"}`]
+    ]
+  }).then((todos) => {
     if(todos.length) {
       res.json(todos);
     } else {
@@ -39,10 +45,11 @@ module.exports.deleteTodo = (req, res) => {
     if (!todo) {
       return res.status(404).json({ message: "Couldn't find todo!" });
     }
-    todo.destroy();
-    res.json({message: "Deleted Successfully!"})
+    todo.destroy().then(resp => {
+      res.json({message: "Deleted Successfully!", payload: resp})
+    })
   }).catch((error) => {
-    res.status(500).json(error);
+    res.status(404).json(error);
   })
 }
 
@@ -59,8 +66,9 @@ module.exports.updateTodo = (req, res) => {
     todo.update({
       todoName: todoName,
       done: done
+    }).then((resp) => {
+      res.json({message: "Updated Successfully!", payload: resp});
     })
-    res.json({message: "Updated Successfully!"})
   }).catch((error) => {
     res.status(500).json(error);
   })
