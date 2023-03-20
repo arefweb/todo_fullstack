@@ -5,7 +5,8 @@ import ToDoList from "src/components/ToDoList/ToDoList";
 import {Todo} from "src/App.types";
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const localTodos: Todo[] | null = JSON.parse(localStorage.getItem('todos') as string);
+  const [todos, setTodos] = useState<Todo[]>(localTodos ? localTodos : []);
   const [sortedTodos, setSortedTodos] = useState<Todo[]>([]);
   const [sort, setSort] = useState<'up' | 'down'>('up');
 
@@ -68,6 +69,7 @@ function App() {
 
   useEffect(() => {
     handleSort();
+    localStorage.setItem('todos', JSON.stringify(todos));
   }, [sort, todos]);
 
 
