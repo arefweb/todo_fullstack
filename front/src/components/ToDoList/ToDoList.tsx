@@ -29,9 +29,9 @@ const ToDoList = ({todos, deleteTodo, updateTodo, sort, setSort}: IToDoList) => 
           <h3>Add some ToDos to show up here!</h3>
         </div>
       )}
-      {todos.map((todo) => {
+      {todos.length ? todos.map((todo) => {
         return <ToDoCard key={todo.id} todo={todo} deleteTodo={deleteTodo} updateTodo={updateTodo} />;
-      })}
+      }) : <></>}
     </div>
   )
 }

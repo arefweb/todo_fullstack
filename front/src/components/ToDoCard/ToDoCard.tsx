@@ -15,7 +15,7 @@ const ToDoCard = ({todo, deleteTodo, updateTodo}: IToDoCard) => {
   const [task, setTask] = useState<string>(todo.todoName);
 
   return (
-    <div className="ToDoCard">
+    <div className="ToDoCard" data-cy="todo card">
       <div className="ToDoCard_left">
         <div>
           {isEditing ?
@@ -23,6 +23,7 @@ const ToDoCard = ({todo, deleteTodo, updateTodo}: IToDoCard) => {
                 <div>
                   <input
                     type="text"
+                    data-cy="edit input"
                     placeholder="Write a todo here"
                     onKeyUp={(e) => {
                       if(e.key === "Enter"){
@@ -46,6 +47,7 @@ const ToDoCard = ({todo, deleteTodo, updateTodo}: IToDoCard) => {
                 <h4
                   className={`ToDoCard_left-title ${todo.done && "isDone"}`}
                   onClick={() => updateTodo({...todo, done: !todo.done})}
+                  data-cy="todo title"
                 >
                   {todo.todoName}
                 </h4>
@@ -60,10 +62,10 @@ const ToDoCard = ({todo, deleteTodo, updateTodo}: IToDoCard) => {
       </div>
       <div className="ToDoCard_right">
         <div>
-          <Edit className="ToDoCard_right-edit" onClick={() => setIsEditing(true)} />
+          <Edit data-cy="edit button" className="ToDoCard_right-edit" onClick={() => setIsEditing(true)} />
         </div>
         <div>
-          <Delete className="ToDoCard_right-delete" onClick={() => deleteTodo(todo.id)} />
+          <Delete data-cy="delete button" className="ToDoCard_right-delete" onClick={() => deleteTodo(todo.id)} />
         </div>
       </div>
     </div>
